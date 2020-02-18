@@ -18,7 +18,7 @@ header('Content-Type: application/json');
 //database
 define('DB_HOST', '127.0.0.1');
 define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'gpbl2019');
+define('DB_PASSWORD', 'zEY[GHCBdH4t');
 define('DB_NAME', 'leaves');
 
 //get connection
