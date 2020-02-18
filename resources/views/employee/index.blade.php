@@ -9,10 +9,6 @@ If you want to learning about Laravel framework so please see a laravel website.
     @foreach ($employees as $emp)
         <li>{{$emp->name}}</li>
     @endforeach
-
-    @foreach ($leaves as $leave)
-        <li>{{$leave->reason_note}}</li>
-    @endforeach
 </ol>
 
 <?php
