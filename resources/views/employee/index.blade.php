@@ -19,7 +19,7 @@ header('Content-Type: application/json');
 define('DB_HOST', '127.0.0.1');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'zEY[GHCBdH4t');
-define('DB_NAME', 'leaves');
+define('DB_NAME', 'employees');
 
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
