@@ -29,7 +29,7 @@ if(!$mysqli){
 }
 
 //query to get data from the table
-$query = sprintf("SELECT playerid, score FROM score ORDER BY playerid");
+$query = sprintf("SELECT * FROM employees ");
 
 //execute query
 $result = $mysqli->query($query);
