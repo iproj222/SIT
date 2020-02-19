@@ -6,9 +6,9 @@
 <p>This page is an example for database connection and getting some records.<br/>
 If you want to learning about Laravel framework so please see a laravel website. <a href="https://laravel.com/">https://laravel.com/</a></p>
 <ol>
-    <!-- @foreach ($employees as $emp)
-        <li>{{$emp->name}}</li>
-    @endforeach -->
+    @foreach ($employees as $emp)
+        <li>{{$emp->marital_status}}</li>
+    @endforeach
 </ol>
 <canvas id="myChart" width="400" height="400" style = "height = 400px; width = 400px;"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
