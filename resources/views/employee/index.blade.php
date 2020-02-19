@@ -25,7 +25,7 @@ If you want to learning about Laravel framework so please see a laravel website.
             response.forEach(function(data){
                 Emps.push(data.employee);
             });
-        var ctx = document.getElementById("canvas").getContext('2d');
+        var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -49,7 +49,7 @@ If you want to learning about Laravel framework so please see a laravel website.
         });
     });
 </script>
-
+<!-- 
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -88,7 +88,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
+</script> -->
 
 </body>
 </html>
