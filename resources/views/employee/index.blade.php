@@ -12,9 +12,9 @@ If you want to learning about Laravel framework so please see a laravel website.
 </ol>
 
 <ol>
-    @foreach ($leaves as $leave)
+    <!-- @foreach ($leaves as $leave)
         <li>{{$leave->reason_note}}</li>
-    @endforeach
+    @endforeach -->
 </ol>
 
 
