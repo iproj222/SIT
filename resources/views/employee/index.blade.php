@@ -17,9 +17,10 @@ If you want to learning about Laravel framework so please see a laravel website.
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.3/js/bootstrap-select.min.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" charset="utf-8"></script>
 <script>
-   var ctx = document.getElementById('myChart').getContext('2d');
-   var temp = {{$emplyees}};
-   console.log(temp);
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var temp = {{$emplyees}};
+    console.log(temp);
+
     var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
