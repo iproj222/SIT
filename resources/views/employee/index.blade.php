@@ -10,8 +10,8 @@ If you want to learning about Laravel framework so please see a laravel website.
         <li>{{$emp->name}}</li>
     @endforeach -->
 </ol>
-
 <canvas id="myChart" width="400" height="400"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
