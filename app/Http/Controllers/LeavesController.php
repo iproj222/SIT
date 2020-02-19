@@ -10,8 +10,8 @@ class LeavesController extends Controller
     //
     public function index()
     {
-        $leaves = Employee::all();
-        return view('Employee.index', ['leaves' => $leaves]);
+        $leaves = Leaves::all();
+        return view('employee.index', ['leaves' => $leaves]);
     }
 }
 
