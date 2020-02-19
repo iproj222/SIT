@@ -6,9 +6,9 @@
 <p>This page is an example for database connection and getting some records.<br/>
 If you want to learning about Laravel framework so please see a laravel website. <a href="https://laravel.com/">https://laravel.com/</a></p>
 <ol>
-    @foreach ($employees as $emp)
+    <!-- @foreach ($employees as $emp)
         <li>{{$emp->name}}</li>
-    @endforeach
+    @endforeach -->
 </ol>
 <canvas id="myChart" width="400" height="400" style = "height = 400px; width = 400px;"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -16,9 +16,9 @@ If you want to learning about Laravel framework so please see a laravel website.
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.3/js/bootstrap-select.min.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" charset="utf-8"></script>
-<!-- <script>
+<script>
    var ctx = document.getElementById('myChart').getContext('2d');
-   
+   var temp = {{$emplyees}};
    console.log(temp);
     var myChart = new Chart(ctx, {
     type: 'bar',
@@ -56,7 +56,7 @@ If you want to learning about Laravel framework so please see a laravel website.
         }
     }
 });
-</script> -->
+</script>
 
 
 </body>
