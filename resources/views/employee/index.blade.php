@@ -7,7 +7,7 @@
 If you want to learning about Laravel framework so please see a laravel website. <a href="https://laravel.com/">https://laravel.com/</a></p>
 <ol>
     @foreach ($employees as $emp)
-        <li>{{$emp->birthday}}</li>
+        <li>{{$emp->name}}</li>
     @endforeach
 </ol>
 
