@@ -18,3 +18,4 @@ Route::get('/', function () {
 Route::get('/employees', 'EmployeeController@index');
 Route::get('/leaves', 'LeavesController@index');
 
+Route::get('employees/chart','EmployeeController@chart');

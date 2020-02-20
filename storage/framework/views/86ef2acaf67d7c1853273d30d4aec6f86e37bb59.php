@@ -2,16 +2,16 @@
 <body>
 <h1>Hello, Global PBL Teams!</h1>
 <ol>
-    <!-- @foreach ($employees as $emp)
+    <!-- <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $emp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <li>
-            {{$emp->name}}<br> 
-            birthday: {{ $emp->birthday }} <br>
-            hometown: {{ $emp->hometown }} <br>
-            address: {{ $emp->address }} <br>
-            join date: {{ $emp->join_date }} <br>
+            <?php echo e($emp->name); ?><br> 
+            birthday: <?php echo e($emp->birthday); ?> <br>
+            hometown: <?php echo e($emp->hometown); ?> <br>
+            address: <?php echo e($emp->address); ?> <br>
+            join date: <?php echo e($emp->join_date); ?> <br>
             
         </li>
-    @endforeach -->
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
 
 </ol>
 
