@@ -12,6 +12,10 @@ class LeavesController extends Controller
     {
         $leaves = Leaves::all();
         return view('leaves.index', ['leaves' => $leaves]);
+        return view('reasonType.index', ['leaves' => $leaves]);
+        return view('reasonNote.index', ['leaves' => $leaves]);
+        return view('gender.index', ['leaves' => $leaves]);
+        return view('period.index', ['leaves' => $leaves]);
     }
 }
 

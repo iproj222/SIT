@@ -15,6 +15,13 @@
   <!-- Custom styles for this template -->
   <link href="css/simple-sidebar.css" rel="stylesheet">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.3/js/bootstrap-select.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" charset="utf-8"></script>
+
+  
+
 </head>
 
 <body>
@@ -25,7 +32,7 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
       <a href="/"><div class="sidebar-heading" >GPBL 2020 </div></a>
       <div class="list-group list-group-flush">
-        <a href="reasonType" class="list-group-item list-group-item-action bg-light">Reason Type</a>
+      <a href="reasonType" class="list-group-item list-group-item-action bg-light">Reason Type</a>
         <a href="reasonNote" class="list-group-item list-group-item-action bg-light">Reason Note</a>
         <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
         <a href="period" class="list-group-item list-group-item-action bg-light">Period</a>
@@ -69,9 +76,94 @@
       </nav>
 
       <div class="container-fluid">
-        <h1 class="mt-4">SIT GPBL2020 Group3</h1>
-        <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+        <h1 class="mt-4">Reason Type</h1>
+        <style>
+    .chart{
+        width : 600px !important;
+        height : 600px !important;
+    }
+</style>
+
+<div class="container">
+
+    <canvas id="LastPositionChart" class="chart"></canvas>
+
+</div>
+
+<<?php
+    $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
+    $select = mysqli_query($connect, "SELECT last_position,count(last_position) from leaves group by last_position;");
+    // while ($p = mysqli_fetch_array($select)){
+    //     print_r($p);
+    //     echo "<br/>";
+    // }
+?>
+
+<script>
+  
+    var coloR = [];
+    var points = new Array(100);
+
+    var dynamicColors = function() {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        var a = Math.floor(Math.random() * 100);
+        return "rgba(" + r + "," + g + "," + b + ","+ a +")";
+    };
+    
+    
+    coloR.push("rgba(54, 162, 235, 1)");
+    coloR.push("rgba(255,99,132,1)");
+    coloR.push("rgba(255, 206, 86, 1)");
+    coloR.push("rgba(75, 192, 192, 1)");
+    coloR.push("rgba(153, 102, 255, 1)");
+    coloR.push("rgba(255, 159, 64, 1)");
+    coloR.push("rgba(255, 99, 132, 0.2)");
+    coloR.push("rgba(54, 162, 235, 0.2)");
+    coloR.push("rgba(255, 206, 86, 0.2)");
+    coloR.push("rgba(75, 192, 192, 0.2)");
+    coloR.push("rgba(153, 102, 255, 0.2)");
+    coloR.push("rgba(255, 159, 64, 0.2)");
+    coloR.push("rgba(54, 162, 235, 1)");
+    coloR.push("rgba(255,99,132,1)");
+    for (var i=0 ; i < 100 ; i++) 
+        coloR.push(dynamicColors());
+
+
+    var ctx = document.getElementById("LastPositionChart");
+    var reasonTypeChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                <?php while ($p = mysqli_fetch_array($select)){
+                    
+                        echo "'".$p['last_position']."', ";
+
+                  }?>
+                  ],
+            datasets: [{
+                    label: 'pie chart',
+                    data: [
+                        <?php 
+                        $select = mysqli_query($connect, "SELECT last_position,count(last_position) from leaves group by last_position;");
+                        while ($p = mysqli_fetch_array($select)){
+                            echo "'".$p['count(last_position)']."', ";
+                        }?>
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Reason Type'
+            }
+        }
+    } );
+</script>
       </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -97,3 +189,7 @@
 </body>
 
 </html>
+
+
+
+

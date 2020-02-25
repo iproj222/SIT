@@ -17,5 +17,11 @@ Route::get('/', function () {
 
 Route::get('/employees', 'EmployeeController@index');
 Route::get('/leaves', 'LeavesController@index');
+Route::get('/reasonType', 'ReasonTypeController@index');
+Route::get('/reasonNote', 'ReasonNoteController@index');
+Route::get('/gender', 'GenderController@index');
+Route::get('/period', 'PeriodController@index');
+Route::get('/lastPosition', 'LastPositionController@index');
+Route::get('/maritalStatus', 'MaritalStatusController@index');
 
 Route::get('employees/chart','EmployeeController@chart');

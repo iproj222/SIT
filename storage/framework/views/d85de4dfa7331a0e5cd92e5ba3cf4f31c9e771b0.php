@@ -45,6 +45,20 @@
     };
     
     window.onload = function(){
+        coloR.push("rgba(54, 162, 235, 1)");
+        coloR.push("rgba(255,99,132,1)");
+        coloR.push("rgba(255, 206, 86, 1)");
+        coloR.push("rgba(75, 192, 192, 1)");
+        coloR.push("rgba(153, 102, 255, 1)");
+        coloR.push("rgba(255, 159, 64, 1)");
+        coloR.push("rgba(255, 99, 132, 0.2)");
+        coloR.push("rgba(54, 162, 235, 0.2)");
+        coloR.push("rgba(255, 206, 86, 0.2)");
+        coloR.push("rgba(75, 192, 192, 0.2)");
+        coloR.push("rgba(153, 102, 255, 0.2)");
+        coloR.push("rgba(255, 159, 64, 0.2)");
+        coloR.push("rgba(54, 162, 235, 1)");
+        coloR.push("rgba(255,99,132,1)");
         for (var i=0 ; i < 100 ; i++) 
             coloR.push(dynamicColors());
     }
@@ -67,68 +81,27 @@
                             echo "'".$p['count(gender)']."', ";
                         }?>
                     ],
-                    backgroundColor: [  dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                        ],
-                    borderColor: [coloR],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
                     borderWidth: 1
                 }]
         },
         options: {
+            plugins: {
+                datalabels: {
+                formatter: (value, gctx) => {
+                    let datasets = gctx.chart.data.datasets;
+                    if (datasets.indexOf(gctx.dataset) === datasets.length - 1) {
+                        let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                        let percentage = Math.round((value / sum) * 100) + '%';
+                        return percentage;
+                    } else {
+                        return percentage;
+                    }
+                },
+                color: '#fff',
+                }
+            },
             title: {
                 display: true,
                 text: 'Gender'
@@ -154,80 +127,8 @@
                             echo "'".$p['count(reason_note)']."', ";
                         }?>
                     ],
-                    backgroundColor: [
-                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                                        dynamicColors(),
-                    ],
-                    borderColor: [
-                        coloR
-                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
                     borderWidth: 1
                 }]
         },
@@ -257,34 +158,8 @@
                             echo "'".$p['count(last_position)']."', ";
                         }?>
                     ],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
                     borderWidth: 1
                 }]
         },
