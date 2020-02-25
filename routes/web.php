@@ -14,8 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/leaves', function () {
+    return view('leaves');
+});
 
 Route::get('/employees', 'EmployeeController@index');
-Route::get('/leaves', 'LeavesController@index');
+// Route::get('/leaves', 'LeavesController@index');
+Route::get('/api/leaves', 'LeavesController@index');
 
 Route::get('employees/chart','EmployeeController@chart');

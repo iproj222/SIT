@@ -10,8 +10,8 @@ class LeavesController extends Controller
     //
     public function index()
     {
-        $leaves = Leaves::all();
-        return view('leaves.index', ['leaves' => $leaves]);
+        $leaves = Leaves::select('reason_type', 'reason_note')->get();
+        return $leaves;
     }
 }
 
