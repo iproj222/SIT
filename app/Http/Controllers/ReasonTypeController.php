@@ -12,6 +12,17 @@ class ReasonTypeController extends Controller
     {
         $leaves = Leaves::all();
 
+
+        // foreach ($leaves as $lev){
+        //     if(empty($lev->reason_note) && empty($lev->reason_type)){
+
+        //     }
+
+        //     $lev->reason_note ;
+        //     $lev->reason_type ;
+        // }
+        
+
         return view('reasonType.index', ['leaves' => $leaves]);
         
     }

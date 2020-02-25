@@ -75,14 +75,14 @@
         </div>
       </nav>
 
-      <div class="container-fluid">
-        <h1 class="mt-4">Reason Type</h1>
-        <style>
-    .chart{
-        width : 600px !important;
-        height : 600px !important;
-    }
-</style>
+<div class="container-fluid">
+<h1 class="mt-4">Reason Type</h1>
+    <style>
+            .chart{
+                width : 600px !important;
+                height : 600px !important;
+            }
+    </style>
 
 <div class="container">
 
@@ -90,13 +90,26 @@
 
 </div>
 
+<ol>
+    @foreach ($leaves as $lev)
+        <li>
+            Name : {{$lev->name}}<br> 
+            Gender : {{ $lev->gender }} <br>
+            Last_Position : {{ $lev->last_position }} <br>
+            Reason Note : {{ $lev->reason_note }} <br>
+            Reason Type : {{ $lev->reason_type }} <br>
+        </li>
+    @endforeach
+
+</ol>
+
 <<?php
     $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
-    $select = mysqli_query($connect, "SELECT reason_type,count(reason_type) from leaves group by reason_type;");
-    // while ($p = mysqli_fetch_array($select)){
-    //     print_r($p);
-    //     echo "<br/>";
-    // }
+    $query = "SELECT reason_type,count(reason_type) from leaves group by reason_type;";
+    $result = mysqli_query($connect, $query);
+    $row = mysqli_fetch_array($result, MYSQLI_BOTH);
+
+
 ?>
 
 <script>
@@ -136,10 +149,10 @@
         type: 'pie',
         data: {
             labels: ["NULL",
-                <?php while ($p = mysqli_fetch_array($select)){
-                    
+                <?php 
+                $result = mysqli_query($connect, $query);
+                while ($p = mysqli_fetch_array($result)){
                         echo "'".$p['reason_type']."', ";
-
                   }?>
                   ],
             datasets: [{
@@ -147,8 +160,8 @@
                     data: [
                         "176",
                         <?php 
-                        $select = mysqli_query($connect, "SELECT reason_type,count(reason_type) from leaves group by reason_type;");
-                        while ($p = mysqli_fetch_array($select)){
+                        $result = mysqli_query($connect, $query);
+                        while ($p = mysqli_fetch_array($result)){
                             echo "'".$p['count(reason_type)']."', ";
                         }?>
                     ],
@@ -190,7 +203,3 @@
 </body>
 
 </html>
-
-
-
-
