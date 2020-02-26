@@ -91,6 +91,7 @@
 </div>
 
 <ol>
+    
     <?php $__currentLoopData = $leaves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lev): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <li>
             Name : <?php echo e($lev->name); ?><br> 
@@ -148,7 +149,7 @@
     var reasonTypeChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ["NULL",
+            labels: [
                 <?php 
                 $result = mysqli_query($connect, $query);
                 while ($p = mysqli_fetch_array($result)){
@@ -158,7 +159,6 @@
             datasets: [{
                     label: 'pie chart',
                     data: [
-                        "176",
                         <?php 
                         $result = mysqli_query($connect, $query);
                         while ($p = mysqli_fetch_array($result)){

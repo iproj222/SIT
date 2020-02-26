@@ -91,6 +91,7 @@
 </div>
 
 <ol>
+    
     @foreach ($leaves as $lev)
         <li>
             Name : {{$lev->name}}<br> 
@@ -109,6 +110,9 @@
     $result = mysqli_query($connect, $query);
     $row = mysqli_fetch_array($result, MYSQLI_BOTH);
 
+    foreach($leaves as $key => $value){
+        
+    }
 
 ?>
 
@@ -148,7 +152,7 @@
     var reasonTypeChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ["NULL",
+            labels: [
                 <?php 
                 $result = mysqli_query($connect, $query);
                 while ($p = mysqli_fetch_array($result)){
@@ -158,7 +162,6 @@
             datasets: [{
                     label: 'pie chart',
                     data: [
-                        "176",
                         <?php 
                         $result = mysqli_query($connect, $query);
                         while ($p = mysqli_fetch_array($result)){
