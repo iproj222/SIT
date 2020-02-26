@@ -35,7 +35,7 @@
       <a href="reasonType" class="list-group-item list-group-item-action bg-light">Reason Type</a>
         <a href="reasonNote" class="list-group-item list-group-item-action bg-light">Reason Note</a>
         <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
-        <a href="period" class="list-group-item list-group-item-action bg-light">Period</a>
+        <a href="OverWorkingTime" class="list-group-item list-group-item-action bg-light">OverWorkingTime</a>
         <a href="maritalStatus" class="list-group-item list-group-item-action bg-light">Marital Status</a>
         <a href="gender" class="list-group-item list-group-item-action bg-light">Gender</a>
       </div>
@@ -76,27 +76,58 @@
       </nav>
 
       <div class="container-fluid">
-        <h1 class="mt-4">Reason Type</h1>
+        <h1 class="mt-4">Last Position</h1>
         <style>
-    .chart{
-        width : 600px !important;
-        height : 600px !important;
-    }
-</style>
+            .chart{
+                width : 600px !important;
+                height : 600px !important;
+                float : left;
+                margin : 40px;
+            }
+            .container{
+              width : 1100px;
+            }
+        </style>
+
+
 
 <div class="container">
 
-    <canvas id="LastPositionChart" class="chart"></canvas>
+    <canvas id="oneYearChart" class="chart"></canvas>
+
+    <canvas id="twoYearChart" class="chart"></canvas>
+
+    <canvas id="extendChart" class="chart"></canvas>
 
 </div>
 
+
 <<?php
     $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
-    $select = mysqli_query($connect, "SELECT last_position,count(last_position) from leaves group by last_position;");
-    // while ($p = mysqli_fetch_array($select)){
-    //     print_r($p);
-    //     echo "<br/>";
-    // }
+    $select_one = mysqli_query($connect," SELECT last_position , count(last_position)
+                                          from leaves as l
+                                          join employees as e
+                                          on l.employee_number = e.employee_number
+                                          where e.join_date is not null 
+                                          and DATEDIFF(l.period, e.join_date) <= 365
+                                          and DATEDIFF(l.period, e.join_date) > 0
+                                          group by (last_position);");
+    $select_two = mysqli_query($connect," SELECT last_position , count(last_position)
+                                          from leaves as l
+                                          join employees as e
+                                          on l.employee_number = e.employee_number
+                                          where e.join_date is not null 
+                                          and DATEDIFF(l.period, e.join_date) > 365
+                                          and DATEDIFF(l.period, e.join_date) <= 730
+                                          group by (last_position);");
+    $select_ex = mysqli_query($connect,"SELECT last_position , count(last_position)
+                                        from leaves as l
+                                        join employees as e
+                                        on l.employee_number = e.employee_number
+                                        where e.join_date is not null 
+                                        and DATEDIFF(l.period, e.join_date) > 730
+                                        group by (last_position);");
+    
 ?>
 
 <script>
@@ -111,7 +142,6 @@
         var a = Math.floor(Math.random() * 100);
         return "rgba(" + r + "," + g + "," + b + ","+ a +")";
     };
-    
     
     coloR.push("rgba(54, 162, 235, 1)");
     coloR.push("rgba(255,99,132,1)");
@@ -130,13 +160,12 @@
     for (var i=0 ; i < 100 ; i++) 
         coloR.push(dynamicColors());
 
-
-    var ctx = document.getElementById("LastPositionChart");
-    var reasonTypeChart = new Chart(ctx, {
+    var octx = document.getElementById("oneYearChart");
+    var reasonTypeChart = new Chart(octx, {
         type: 'pie',
         data: {
             labels: [
-                <?php while ($p = mysqli_fetch_array($select)){
+                <?php while ($p = mysqli_fetch_array($select_one)){
                     
                         echo "'".$p['last_position']."', ";
 
@@ -146,8 +175,15 @@
                     label: 'pie chart',
                     data: [
                         <?php 
-                        $select = mysqli_query($connect, "SELECT last_position,count(last_position) from leaves group by last_position;");
-                        while ($p = mysqli_fetch_array($select)){
+                        $select_one = mysqli_query($connect, "SELECT last_position , count(last_position)
+                                                              from leaves as l
+                                                              join employees as e
+                                                              on l.employee_number = e.employee_number
+                                                              where e.join_date is not null 
+                                                              and DATEDIFF(l.period, e.join_date) <= 365
+                                                              and DATEDIFF(l.period, e.join_date) > 0
+                                                              group by (last_position);");
+                        while ($p = mysqli_fetch_array($select_one)){
                             echo "'".$p['count(last_position)']."', ";
                         }?>
                     ],
@@ -159,7 +195,85 @@
         options: {
             title: {
                 display: true,
-                text: 'Reason Type'
+                text: 'Zero to One year',
+                fontSize : 35
+            }
+        }
+    } );
+
+    var octx = document.getElementById("twoYearChart");
+    var reasonTypeChart = new Chart(octx, {
+        type: 'pie',
+        data: {
+            labels: [
+                <?php while ($p = mysqli_fetch_array($select_two)){
+                        echo "'".$p['last_position']."', ";
+                  }?>
+                  ],
+            datasets: [{
+                    label: 'pie chart',
+                    data: [
+                        <?php 
+                        $select_two = mysqli_query($connect, "SELECT last_position , count(last_position)
+                                                              from leaves as l
+                                                              join employees as e
+                                                              on l.employee_number = e.employee_number
+                                                              where e.join_date is not null 
+                                                              and DATEDIFF(l.period, e.join_date) <= 730
+                                                              and DATEDIFF(l.period, e.join_date) > 365
+                                                              group by (last_position);");
+                        while ($p = mysqli_fetch_array($select_two)){
+                            echo "'".$p['count(last_position)']."', ";
+                        }?>
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'One year to Two years',
+                fontSize : 35
+            }
+        }
+    } );
+
+    var octx = document.getElementById("extendChart");
+    var reasonTypeChart = new Chart(octx, {
+        type: 'pie',
+        data: {
+            labels: [
+                <?php while ($p = mysqli_fetch_array($select_ex)){
+                        echo "'".$p['last_position']."', ";
+                  }?>
+                  ],
+            datasets: [{
+                    label: 'pie chart',
+                    data: [
+                        <?php 
+                        $select_ex = mysqli_query($connect, "SELECT last_position , count(last_position)
+                                                              from leaves as l
+                                                              join employees as e
+                                                              on l.employee_number = e.employee_number
+                                                              where e.join_date is not null 
+                                                              and DATEDIFF(l.period, e.join_date) > 730
+                                                              group by (last_position);");
+                        while ($p = mysqli_fetch_array($select_ex)){
+                            echo "'".$p['count(last_position)']."', ";
+                        }?>
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'More than Two years',
+                fontSize : 35
             }
         }
     } );

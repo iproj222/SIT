@@ -93,10 +93,7 @@
 <<?php
     $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
     $select = mysqli_query($connect, "SELECT period,count(period) from leaves group by period;");
-    // while ($p = mysqli_fetch_array($select)){
-    //     print_r($p);
-    //     echo "<br/>";
-    // }
+    
 ?>
 
 <script>
@@ -112,7 +109,7 @@
         return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
     }
 
-    alert(daysBetween($('#first').val(), $('#second').val()));
+    // alert(daysBetween($('#first').val(), $('#second').val()));
 
     var coloR = [];
     var points = new Array(100);

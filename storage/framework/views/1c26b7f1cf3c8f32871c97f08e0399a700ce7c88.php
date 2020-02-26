@@ -10,9 +10,9 @@
 
   <title>Simple Sidebar - Start Bootstrap Template</title>
 
-  <!-- Bootstrap core CSS -->
+  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <!-- Custom styles for this template -->
+  
   <link href="css/simple-sidebar.css" rel="stylesheet">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -28,7 +28,7 @@
 
   <div class="d-flex" id="wrapper">
 
-    <!-- Sidebar -->
+    
     <div class="bg-light border-right" id="sidebar-wrapper">
       <a href="/"><div class="sidebar-heading" >GPBL 2020 </div></a>
       <div class="list-group list-group-flush">
@@ -40,9 +40,7 @@
         <a href="gender" class="list-group-item list-group-item-action bg-light">Gender</a>
       </div>
     </div>
-    <!-- /#sidebar-wrapper -->
-
-    <!-- Page Content -->
+    
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
@@ -92,23 +90,43 @@
 
 <ol>
     
-    <?php $__currentLoopData = $leaves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lev): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <li>
-            Name : <?php echo e($lev->name); ?><br> 
-            Gender : <?php echo e($lev->gender); ?> <br>
-            Last_Position : <?php echo e($lev->last_position); ?> <br>
-            Reason Note : <?php echo e($lev->reason_note); ?> <br>
-            Reason Type : <?php echo e($lev->reason_type); ?> <br>
-        </li>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
 
 </ol>
 
 <<?php
-    $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
-    $query = "SELECT reason_type,count(reason_type) from leaves group by reason_type;";
-    $result = mysqli_query($connect, $query);
-    $row = mysqli_fetch_array($result, MYSQLI_BOTH);
+
+    $chart = array( "Personal Issues" => 0,
+                    "Working Environment" => 0,
+                    "Continue Studying" => 0,
+                    "CareerPath" => 0,
+                    "Expired Contract" => 0,
+                    "Better Salary" => 0,
+                    "Fired"=> 0);
+
+    foreach($leaves as $key => $value){
+        if($leaves[$key]->reason_type == "Personal Issues"){
+            $chart["Personal Issues"]++;
+        }
+        else if($leaves[$key]->reason_type == "Working Environment"){
+            $chart["Working Environment"]++;
+        }
+        else if($leaves[$key]->reason_type =="Continue Studying"){
+            $chart["Continue Studying"]++;
+        }
+        else if($leaves[$key]->reason_type == "CareerPath"){
+            $chart["CareerPath"]++;
+        }
+        else if($leaves[$key]->reason_type == "Expired Contract"){
+            $chart["Expired Contract"]++;
+        }
+        else if($leaves[$key]->reason_type == "Better Salary"){
+            $chart["Better Salary"]++;
+        }
+        else if($leaves[$key]->reason_type == "Fired"){
+            $chart["Fired"]++;
+        }
+    }
 
 
 ?>
@@ -151,48 +169,48 @@
         data: {
             labels: [
                 <?php 
-                $result = mysqli_query($connect, $query);
-                while ($p = mysqli_fetch_array($result)){
-                        echo "'".$p['reason_type']."', ";
-                  }?>
+                    foreach($chart as $key=>$value){
+                        echo "'".$key."', ";
+                }?>
                   ],
             datasets: [{
                     label: 'pie chart',
                     data: [
                         <?php 
-                        $result = mysqli_query($connect, $query);
-                        while ($p = mysqli_fetch_array($result)){
-                            echo "'".$p['count(reason_type)']."', ";
+                            foreach($chart as $key=>$value){
+                                echo "'".$value."', ";
                         }?>
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    fontSize : 20
                 }]
         },
         options: {
             title: {
                 display: true,
-                text: 'Reason Type'
+                text: 'Reason Type',
+                fontSize : 25
+            },
+            legend: {
+                labels: {
+                    fontSize : 25
+                }
             }
         }
     } );
 </script>
       </div>
     </div>
-    <!-- /#page-content-wrapper -->
 
   </div>
-  <!-- /#wrapper -->
-
-  <!-- Bootstrap core JavaScript -->
   
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
   
 
-  <!-- Menu Toggle Script -->
   <script>
     $("#menu-toggle").click(function(e) {
       e.preventDefault();
