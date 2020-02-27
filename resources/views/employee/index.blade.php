@@ -25,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" charset="utf-8"></script>
 
 <?php
-    $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
+    $connect = mysqli_connect("127.0.0.1", "root", "tung_abc123456", "gpbl2019");
     $selectB = mysqli_query($connect, "SELECT birthday FROM employees");
     $selectJ = mysqli_query($connect, "SELECT join_date FROM employees");
 ?>
