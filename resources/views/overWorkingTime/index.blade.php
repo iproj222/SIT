@@ -78,28 +78,58 @@
               float : left;
             }
             .mt-4{ color : #555; }
+            .avg{
+                color : #555;
+                font-size : 20pt;
+                witdh : 400px;
+                margin : 30px;
+            }
         </style>
+
+<?php
+    $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
+    $select240 = mysqli_query($connect, " SELECT count(id)
+                                          from avg_view
+                                          where avg < 240;");
+?>
 
 <div class="container">
    
     <div class="div1">
-      <canvas id="timeChart" class="chart"></canvas>
+        <canvas id="timeChart" class="chart"></canvas>
+                
+        <?php 
+            $selectAvg = mysqli_query($connect, "SELECT ROUND(avg(avg)/60,2) as 'avg' from avg_view;");
 
-      <canvas id="time8Chart" class="donutChart"></canvas>
+            while ($p = mysqli_fetch_array($selectAvg)){
+                echo "<p class='avg'>Left Employees's Avg Hours : ".$p['avg']." hours </p> ";
+            }
+        ?>
 
-      <canvas id="time9Chart" class="donutChart"></canvas>
+        <canvas id="time8Chart" class="donutChart"></canvas>
 
-      <canvas id="time10Chart" class="donutChart"></canvas>
+        <canvas id="time9Chart" class="donutChart"></canvas>
+
+        <canvas id="time10Chart" class="donutChart"></canvas>
     </div>
 
     <div class="div1">
-      <canvas id="allTimeChart" class="chart"></canvas>
 
-      <canvas id="allTime8Chart" class="donutChart"></canvas>
+        <canvas id="allTimeChart" class="chart"></canvas>
 
-      <canvas id="allTime9Chart" class="donutChart"></canvas>
+        <?php 
+            $selectAll = mysqli_query($connect, "SELECT ROUND(avg(avg)/60,2) as 'avg' from all_avg_view;");
 
-      <canvas id="allTime10Chart" class="donutChart"></canvas>
+            while ($p = mysqli_fetch_array($selectAll)){
+                echo "<p class='avg'>All Employees's Avg Hours : ".$p['avg']." hours </p> ";
+            }
+        ?>
+
+        <canvas id="allTime8Chart" class="donutChart"></canvas>
+
+        <canvas id="allTime9Chart" class="donutChart"></canvas>
+
+        <canvas id="allTime10Chart" class="donutChart"></canvas>
     </div>
 
     <canvas id="bTime8Chart" class="dChart"></canvas>
@@ -108,25 +138,9 @@
 
     <canvas id="bTime10Chart" class="dChart"></canvas>
 
-
 </div>
 
-<?php
-    $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
-    $select240 = mysqli_query($connect, " SELECT count(id)
-                                          from avg_view
-                                          where avg < 240;");
-    // CREATE VIEW avg_view as
-    // select leaves.employee_number as "id",avg(TIMESTAMPDIFF(MINUTE,checkin,checkout)) as "avg"
-    // from checkin_outs
-    // join leaves
-    // on leaves.employee_number = checkin_outs.employee_number
-    // where checkin is not null 
-    // and checkout is not null 
-    // and checkin > 0
-    // and checkout > 0
-    // group by leaves.employee_number;
-?>
+
 
 <script>
 

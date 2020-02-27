@@ -75,6 +75,10 @@ select count(id)
 from avg_view
 where avg >= 600;
 
+select avg(avg)
+from avg_view
+group by id
+
 select count(id) 
 from all_avg_view
 where avg >= 540;

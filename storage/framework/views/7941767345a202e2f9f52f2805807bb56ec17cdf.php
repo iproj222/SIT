@@ -84,7 +84,7 @@
 
     <canvas id="allChart" class="chart"></canvas>
 
-    <h2> Top 5 Departments of Retirement Rate </h2>
+    <h2> Top 5 Last Position of Retirement Rate </h2>
 
     <canvas id="DEV2Chart" class="chart2"></canvas>
 
