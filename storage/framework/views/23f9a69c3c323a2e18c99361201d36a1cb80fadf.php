@@ -36,7 +36,7 @@
         <a href="reasonNote" class="list-group-item list-group-item-action bg-light">Reason Note</a>
         <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
         <a href="OverWorkingTime" class="list-group-item list-group-item-action bg-light">OverWorkingTime</a>
-        <a href="maritalStatus" class="list-group-item list-group-item-action bg-light">Marital Status</a>
+        <a href="age" class="list-group-item list-group-item-action bg-light">Age</a>
         <a href="gender" class="list-group-item list-group-item-action bg-light">Gender</a>
       </div>
     </div>
@@ -393,12 +393,12 @@
         type: 'doughnut',
         data: {
             labels: [
-                "86.29%","13.71%"
+                "28.21%","71.79%"
                   ],
             datasets: [{
                     label: 'doughnut chart',
                     data: [
-                        "28.21","71.79"
+                        "28.21","71.79" // 296 , 1049
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -424,7 +424,7 @@
             datasets: [{
                     label: 'doughnut chart',
                     data: [
-                        "29.54","70.46"
+                        "29.54","70.46" // 265 , 897
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -445,12 +445,12 @@
         type: 'doughnut',
         data: {
             labels: [
-                "30.99%","76.52%"
+                "30.99%","69.01%"
                   ],
             datasets: [{
                     label: 'doughnut chart',
                     data: [
-                        "30.99","69.01"
+                        "30.99","69.01" // 84 , 271
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,

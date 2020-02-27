@@ -36,7 +36,7 @@
         <a href="reasonNote" class="list-group-item list-group-item-action bg-light">Reason Note</a>
         <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
         <a href="OverWorkingTime" class="list-group-item list-group-item-action bg-light">OverWorkingTime</a>
-        <a href="maritalStatus" class="list-group-item list-group-item-action bg-light">Marital Status</a>
+        <a href="age" class="list-group-item list-group-item-action bg-light">Age</a>
         <a href="gender" class="list-group-item list-group-item-action bg-light">Gender</a>
       </div>
     </div>

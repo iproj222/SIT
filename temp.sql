@@ -19,6 +19,11 @@ and DATEDIFF(l.period, e.join_date) <= 365
 and DATEDIFF(l.period, e.join_date) > 0
 group by (l.last_position);
 
+select employee_number distinct,grade
+from assigns
+order by yearmonth;
+
+
 select l.last_position , count(l.last_position)
 from leaves as l
 join employees as e
@@ -77,3 +82,49 @@ where avg >= 600;
 select count(id) 
 from all_avg_view
 where avg >= 540;
+
+
+-- AGE QUERY
+CREATE VIEW allAge as
+select employee_number as id , TRUNCATE(DATEDIFF(now(), birthday)/365,0) as "age"
+from employees
+where birthday is not null;
+
+CREATE VIEW leftAge as
+select e.employee_number as id, TRUNCATE(DATEDIFF(now(), birthday)/365,0) as "age"
+from employees as e
+join leaves as l
+on e.employee_number = l.employee_number
+where birthday is not null;
+
+select count(age)
+from allAge
+where age < 20;
+
+select count(age)
+from allAge
+where age >= 20 and age <30;
+
+select count(age)
+from allAge
+where age >= 30 and age <40;
+
+select count(age)
+from allAge
+where age >=40;
+
+select count(age)
+from leftAge
+where age < 20;
+
+select count(age)
+from leftAge
+where age >= 20 and age <30;
+
+select count(age)
+from leftAge
+where age >= 30 and age <40;
+
+select count(age)
+from leftAge
+where age >=40;

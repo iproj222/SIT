@@ -76,27 +76,38 @@
       </nav>
 
       <div class="container-fluid">
-        <h1 class="mt-4">Reason Note</h1>
+        <h1 class="mt-4">Age</h1>
         <style>
-    .chart{
-        width : 600px !important;
-        height : 600px !important;
-    }
-</style>
+          .chart{
+              width : 550px !important;
+              height : 550px !important;
+              float : left;
+          }
+          .container{
+              width : 1300px !important;
+          }
+        </style>
 
 <div class="container">
 
-    <canvas id="reasonNoteChart" class="chart"></canvas>
+    <canvas id="allAgeChart" class="chart"></canvas>
+
+    <canvas id="leftAgeChart" class="chart"></canvas>
+
+    <canvas id="u20Chart" class="chart"></canvas>
+
+    <canvas id="tttChart" class="chart"></canvas>
+
+    <canvas id="ttfChart" class="chart"></canvas>
+
+    <canvas id="o40Chart" class="chart"></canvas>
 
 </div>
 
 <<?php
-    $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
-    $select = mysqli_query($connect, "SELECT reason_note,count(reason_note) from leaves group by reason_note;");
-    // while ($p = mysqli_fetch_array($select)){
-    //     print_r($p);
-    //     echo "<br/>";
-    // }
+    //                   <20  20-30 30-40  <40 
+    //  all employee age   5 , 504 , 302 , 14
+    // left employee age   0 , 156 , 120 , 3
 ?>
 
 <script>
@@ -112,7 +123,7 @@
         return "rgba(" + r + "," + g + "," + b + ","+ a +")";
     };
     
-    
+
     coloR.push("rgba(54, 162, 235, 1)");
     coloR.push("rgba(255,99,132,1)");
     coloR.push("rgba(255, 206, 86, 1)");
@@ -130,26 +141,18 @@
     for (var i=0 ; i < 100 ; i++) 
         coloR.push(dynamicColors());
 
-
-    var ctx = document.getElementById("reasonNoteChart");
-    var reasonTypeChart = new Chart(ctx, {
+    
+    var actx = document.getElementById("allAgeChart");
+    var allAgeChart = new Chart(actx, {
         type: 'pie',
         data: {
             labels: [
-                <?php while ($p = mysqli_fetch_array($select)){
-                    
-                        echo "'".$p['reason_note']."', ";
-
-                  }?>
+                      "<20" , "20-30" , "30-40" , "<40"
                   ],
             datasets: [{
                     label: 'pie chart',
                     data: [
-                        <?php 
-                        $select = mysqli_query($connect, "SELECT reason_note,count(reason_note) from leaves group by reason_note;");
-                        while ($p = mysqli_fetch_array($select)){
-                            echo "'".$p['count(reason_note)']."', ";
-                        }?>
+                        "5" , "504" , "302" , "14"
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -159,9 +162,160 @@
         options: {
             title: {
                 display: true,
-                text: 'Reason Note'
+                text: 'All Age',
+                fontSize : 40
             }
         }
+    } );
+
+    var lctx = document.getElementById("leftAgeChart");
+    var leftAgeChart = new Chart(lctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                      "<20" , "20-30" , "30-40" , "<40"
+                  ],
+            datasets: [{
+                    label: 'pie chart',
+                    data: [
+                        "0" , "156" , "120" , "3"
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Left Age',
+                fontSize : 40
+            }
+        }
+    } );
+
+    var uctx = document.getElementById("u20Chart");
+    var u20Chart = new Chart(uctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                      "left" , "others" 
+                  ],
+            datasets: [{
+                    label: 'doughnut',
+                    data: [
+                        "0" , "100"
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'under 20',
+                fontSize : 40
+            }
+        }
+    } );
+
+    //two to three
+    var tttctx = document.getElementById("tttChart");
+    var tttChart = new Chart(tttctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                    "left" , "others" 
+                  ],
+            datasets: [{
+                    label: 'doughnut',
+                    data: [
+                        "30.95" ,"69.05"
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: '20-30',
+                fontSize : 40
+            }
+        }
+    } );
+
+    var ttfctx = document.getElementById("ttfChart");
+    var ttfChart = new Chart(ttfctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                    "left" , "others" 
+                  ],
+            datasets: [{
+                    label: 'doughnut',
+                    data: [
+                        "39.73" ,"61.27"
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: '30-40',
+                fontSize : 40
+            }
+        }
+    } );
+
+    var options = {
+          tooltips: {
+              enabled: false
+          },
+          plugins: {
+              datalabels: {
+                  formatter: (value, o40ctx) => {
+                      let sum = 0;
+                      let dataArr = o40ctx.chart.data.datasets[0].data;
+                      dataArr.map(data => {
+                          sum += data;
+                      });
+                      let percentage = (value*100 / sum).toFixed(2)+"%";
+                      return percentage;
+                  },
+                  color: '#fff',
+              }
+          },
+          title: {
+                display: true,
+                text: 'Over 40',
+                fontSize : 40
+            }
+      };
+
+    var o40ctx = document.getElementById("o40Chart");
+    var o40Chart = new Chart(o40ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                    "left" , "others" 
+                  ],
+            datasets: [{
+                    label: 'doughnut',
+                    data: [
+                        "21.42" ,"79.58"
+                    ],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: options
     } );
 </script>
       </div>
