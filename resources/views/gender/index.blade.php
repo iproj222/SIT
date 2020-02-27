@@ -90,7 +90,7 @@
 
 </div>
 
-<<?php
+<?php
     $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
     $select = mysqli_query($connect, "SELECT gender,count(gender) from leaves group by gender;");
     // while ($p = mysqli_fetch_array($select)){
@@ -125,8 +125,6 @@
     coloR.push("rgba(75, 192, 192, 0.2)");
     coloR.push("rgba(153, 102, 255, 0.2)");
     coloR.push("rgba(255, 159, 64, 0.2)");
-    coloR.push("rgba(54, 162, 235, 1)");
-    coloR.push("rgba(255,99,132,1)");
     for (var i=0 ; i < 100 ; i++) 
         coloR.push(dynamicColors());
 

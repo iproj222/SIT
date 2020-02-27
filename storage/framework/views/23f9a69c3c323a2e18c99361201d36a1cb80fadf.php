@@ -32,12 +32,10 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
       <a href="/"><div class="sidebar-heading" >GPBL 2020 </div></a>
       <div class="list-group list-group-flush">
-      <a href="reasonType" class="list-group-item list-group-item-action bg-light">Reason Type</a>
-        <a href="reasonNote" class="list-group-item list-group-item-action bg-light">Reason Note</a>
+        <a href="reasonType" class="list-group-item list-group-item-action bg-light">Reason Type</a>
         <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
         <a href="OverWorkingTime" class="list-group-item list-group-item-action bg-light">OverWorkingTime</a>
         <a href="age" class="list-group-item list-group-item-action bg-light">Age</a>
-        <a href="gender" class="list-group-item list-group-item-action bg-light">Gender</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -52,27 +50,6 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-          </ul>
-        </div>
       </nav>
 
       <div class="container-fluid">
@@ -100,6 +77,7 @@
               width : 550px !important;
               float : left;
             }
+            .mt-4{ color : #555; }
         </style>
 
 <div class="container">
@@ -133,7 +111,7 @@
 
 </div>
 
-<<?php
+<?php
     $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
     $select240 = mysqli_query($connect, " SELECT count(id)
                                           from avg_view
@@ -216,8 +194,7 @@
     coloR.push("rgba(75, 192, 192, 0.2)");
     coloR.push("rgba(153, 102, 255, 0.2)");
     coloR.push("rgba(255, 159, 64, 0.2)");
-    coloR.push("rgba(54, 162, 235, 1)");
-    coloR.push("rgba(255,99,132,1)");
+    
     for (var i=0 ; i < 200 ; i++) 
         coloR.push(dynamicColors());
 

@@ -25,7 +25,7 @@
 
 </div>
 
-<<?php
+<?php
     $connect = mysqli_connect("127.0.0.1", "root", "whd26235", "gpbl2019");
     $selectG = mysqli_query($connect, "SELECT gender , count(gender) from leaves group by gender;");
     $selectN = mysqli_query($connect, "SELECT reason_note , count(reason_note) from leaves group by reason_note;");

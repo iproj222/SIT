@@ -19,10 +19,6 @@ and DATEDIFF(l.period, e.join_date) <= 365
 and DATEDIFF(l.period, e.join_date) > 0
 group by (l.last_position);
 
-select employee_number distinct,grade
-from assigns
-order by yearmonth;
-
 
 select l.last_position , count(l.last_position)
 from leaves as l
@@ -128,3 +124,7 @@ where age >= 30 and age <40;
 select count(age)
 from leftAge
 where age >=40;
+
+select employee_number ,grade
+from assigns
+order by yearmonth;

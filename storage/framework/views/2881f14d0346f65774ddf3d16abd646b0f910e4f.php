@@ -33,11 +33,10 @@
       <a href="/"><div class="sidebar-heading" >GPBL 2020 </div></a>
       <div class="list-group list-group-flush">
       <a href="reasonType" class="list-group-item list-group-item-action bg-light">Reason Type</a>
-        <a href="reasonNote" class="list-group-item list-group-item-action bg-light">Reason Note</a>
-        <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
-        <a href="OverWorkingTime" class="list-group-item list-group-item-action bg-light">OverWorkingTime</a>
-        <a href="age" class="list-group-item list-group-item-action bg-light">Age</a>
-        <a href="gender" class="list-group-item list-group-item-action bg-light">Gender</a>
+      <a href="lastPosition" class="list-group-item list-group-item-action bg-light">Last Position</a>
+      <a href="OverWorkingTime" class="list-group-item list-group-item-action bg-light">OverWorkingTime</a>
+      <a href="age" class="list-group-item list-group-item-action bg-light">Age</a>
+        
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -53,40 +52,24 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-          </ul>
+          
         </div>
       </nav>
 
-      <div class="container-fluid">
-        <h1 class="mt-4">Age</h1>
-        <style>
-          .chart{
-              width : 550px !important;
-              height : 550px !important;
-              float : left;
-          }
-          .container{
-              width : 1300px !important;
-          }
-        </style>
+<div class="container-fluid">
+  <h1 class="mt-4">Age</h1>
+  <style>
+    .chart{
+        width : 550px !important;
+        height : 550px !important;
+        float : left;
+    }
+    .container{
+        width : 1300px !important;
+    }
+    .mt-4{ color : #555; }
+  </style>
+</div>
 
 <div class="container">
 
@@ -104,7 +87,7 @@
 
 </div>
 
-<<?php
+<?php
     //                   <20  20-30 30-40  <40 
     //  all employee age   5 , 504 , 302 , 14
     // left employee age   0 , 156 , 120 , 3
@@ -177,8 +160,6 @@
     coloR.push("rgba(75, 192, 192, 0.2)");
     coloR.push("rgba(153, 102, 255, 0.2)");
     coloR.push("rgba(255, 159, 64, 0.2)");
-    coloR.push("rgba(54, 162, 235, 1)");
-    coloR.push("rgba(255,99,132,1)");
     for (var i=0 ; i < 100 ; i++) 
         coloR.push(dynamicColors());
 
