@@ -368,7 +368,6 @@
         }
     });
 
-    
 
     var ctx10 = document.getElementById("time10Chart");
     var Time10Chart = new Chart(ctx10, {

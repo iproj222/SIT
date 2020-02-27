@@ -125,6 +125,16 @@ select count(age)
 from leftAge
 where age >=40;
 
-select employee_number ,grade
-from assigns
-order by yearmonth;
+--CREATE VIEW
+CREATE VIEW allLastPosition as
+select employee_number, grade as "lastPosition"
+from
+(   select employee_number as "id" , max(yearmonth) as "ym"
+    from assigns
+    group by employee_number) as t
+join assigns as a
+on t.id = a.employee_number and t.ym = a.yearmonth;
+
+select lastPosition , count(lastPosition)
+from allLastPosition
+group by lastPosition;

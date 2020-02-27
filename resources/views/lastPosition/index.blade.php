@@ -56,15 +56,24 @@
         <h1 class="mt-4">Last Position</h1>
         <style>
             .chart{
-                width : 600px !important;
-                height : 600px !important;
+                width : 550px !important;
+                height : 550px !important;
                 float : left;
-                margin : 40px;
             }
             .container{
-              width : 1100px;
+              width : 1300px !important;
+              text-align : center;
+            }
+            .chart2{
+                width : 200px !important;
+                height : 200px !important;
+                float : left;
             }
             .mt-4{ color : #555; }
+            h2{
+                width : 1050px;
+                color : #555;
+            }
         </style>
 
 
@@ -73,9 +82,19 @@
 
     <canvas id="oneYearChart" class="chart"></canvas>
 
-    <canvas id="twoYearChart" class="chart"></canvas>
+    <canvas id="allChart" class="chart"></canvas>
 
-    <canvas id="extendChart" class="chart"></canvas>
+    <h2> Top 5 Departments of Retirement Rate </h2>
+
+    <canvas id="DEV2Chart" class="chart2"></canvas>
+
+    <canvas id="DEV4Chart" class="chart2"></canvas>
+
+    <canvas id="DEV3Chart" class="chart2"></canvas>
+
+    <canvas id="QA2Chart" class="chart2"></canvas>
+
+    <canvas id="DEV1Chart" class="chart2"></canvas>
 
 </div>
 
@@ -87,28 +106,56 @@
                                           join employees as e
                                           on l.employee_number = e.employee_number
                                           where e.join_date is not null 
-                                          and DATEDIFF(l.period, e.join_date) <= 365
-                                          and DATEDIFF(l.period, e.join_date) > 0
                                           group by (last_position);");
-    $select_two = mysqli_query($connect," SELECT last_position , count(last_position)
-                                          from leaves as l
-                                          join employees as e
-                                          on l.employee_number = e.employee_number
-                                          where e.join_date is not null 
-                                          and DATEDIFF(l.period, e.join_date) > 365
-                                          and DATEDIFF(l.period, e.join_date) <= 730
-                                          group by (last_position);");
-    $select_ex = mysqli_query($connect,"SELECT last_position , count(last_position)
-                                        from leaves as l
-                                        join employees as e
-                                        on l.employee_number = e.employee_number
-                                        where e.join_date is not null 
-                                        and DATEDIFF(l.period, e.join_date) > 730
-                                        group by (last_position);");
     
+    $select_all = mysqli_query($connect,"SELECT lastPosition , count(lastPosition)
+                                        from allLastPosition
+                                        group by lastPosition;");
 ?>
 
 <script>
+
+    Chart.pluginService.register({
+        beforeDraw: function (chart) {
+            if (chart.config.options.elements.center) {
+            //Get ctx from string
+            var ctx = chart.chart.ctx;
+
+            //Get options from the center object in options
+            var centerConfig = chart.config.options.elements.center;
+            var fontStyle = centerConfig.fontStyle || 'Arial';
+            var txt = centerConfig.text;
+            var color = centerConfig.color || '#000';
+            var sidePadding = centerConfig.sidePadding || 20;
+            var sidePaddingCalculated = (sidePadding/100) * (chart.innerRadius * 2)
+            //Start with a base font of 30px
+            ctx.font = "30px " + fontStyle;
+
+            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+            var stringWidth = ctx.measureText(txt).width;
+            var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+            // Find out how much the font can grow in width.
+            var widthRatio = elementWidth / stringWidth;
+            var newFontSize = Math.floor(30 * widthRatio);
+            var elementHeight = (chart.innerRadius * 2);
+
+            // Pick a new font size so it will not be larger than the height of label.
+            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+            //Set font settings to draw it correctly.
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = fontSizeToUse+"px " + fontStyle;
+            ctx.fillStyle = color;
+
+            //Draw text in center
+            ctx.fillText(txt, centerX, centerY);
+            }
+        }
+    });
   
     var coloR = [];
     var points = new Array(100);
@@ -138,14 +185,12 @@
         coloR.push(dynamicColors());
 
     var octx = document.getElementById("oneYearChart");
-    var reasonTypeChart = new Chart(octx, {
+    var oneChart = new Chart(octx, {
         type: 'pie',
         data: {
             labels: [
                 <?php while ($p = mysqli_fetch_array($select_one)){
-                    
                         echo "'".$p['last_position']."', ";
-
                   }?>
                   ],
             datasets: [{
@@ -157,8 +202,6 @@
                                                               join employees as e
                                                               on l.employee_number = e.employee_number
                                                               where e.join_date is not null 
-                                                              and DATEDIFF(l.period, e.join_date) <= 365
-                                                              and DATEDIFF(l.period, e.join_date) > 0
                                                               group by (last_position);");
                         while ($p = mysqli_fetch_array($select_one)){
                             echo "'".$p['count(last_position)']."', ";
@@ -172,35 +215,53 @@
         options: {
             title: {
                 display: true,
-                text: 'Zero to One year',
+                text: "Left Employee's Last Position",
                 fontSize : 35
-            }
+            },
+            legend: {
+                labels: {
+                    fontSize : 25
+                }
+            },
+            tooltips: {
+                  bodyFontSize : 35,
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          var allData = data.datasets[tooltipItem.datasetIndex].data;
+                          var tooltipLabel = data.labels[tooltipItem.index];
+                          var tooltipData = allData[tooltipItem.index];
+                          var total = 0;
+                          for (var i in allData) {
+                              total += parseFloat(allData[i]);
+                          }
+                          var tooltipPercentage = Math.round((tooltipData / total)*10000)/100.0;
+                          return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                      }
+                  }
+              }
         }
     } );
 
-    var octx = document.getElementById("twoYearChart");
-    var reasonTypeChart = new Chart(octx, {
+    
+
+    var actx = document.getElementById("allChart");
+    var allChart = new Chart(actx, {
         type: 'pie',
         data: {
             labels: [
-                <?php while ($p = mysqli_fetch_array($select_two)){
-                        echo "'".$p['last_position']."', ";
+                <?php while ($p = mysqli_fetch_array($select_all)){
+                        echo "'".$p['lastPosition']."', ";
                   }?>
                   ],
             datasets: [{
                     label: 'pie chart',
                     data: [
                         <?php 
-                        $select_two = mysqli_query($connect, "SELECT last_position , count(last_position)
-                                                              from leaves as l
-                                                              join employees as e
-                                                              on l.employee_number = e.employee_number
-                                                              where e.join_date is not null 
-                                                              and DATEDIFF(l.period, e.join_date) <= 730
-                                                              and DATEDIFF(l.period, e.join_date) > 365
-                                                              group by (last_position);");
-                        while ($p = mysqli_fetch_array($select_two)){
-                            echo "'".$p['count(last_position)']."', ";
+                        $select_all = mysqli_query($connect, "SELECT lastPosition , count(lastPosition)
+                                                            from allLastPosition
+                                                            group by lastPosition;");
+                        while ($p = mysqli_fetch_array($select_all)){
+                            echo "'".$p['count(lastPosition)']."', ";
                         }?>
                     ],
                     backgroundColor: coloR,
@@ -211,36 +272,41 @@
         options: {
             title: {
                 display: true,
-                text: 'One year to Two years',
+                text: "All Employee's Last Position",
                 fontSize : 35
-            }
+            },
+            legend: {
+                labels: {
+                    fontSize : 25
+                }
+            },
+            tooltips: {
+                  bodyFontSize : 35,
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          var allData = data.datasets[tooltipItem.datasetIndex].data;
+                          var tooltipLabel = data.labels[tooltipItem.index];
+                          var tooltipData = allData[tooltipItem.index];
+                          var total = 0;
+                          for (var i in allData) {
+                              total += parseFloat(allData[i]);
+                          }
+                          var tooltipPercentage = Math.round((tooltipData / total)*10000)/100.0;
+                          return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                      }
+                  }
+              }
         }
     } );
 
-    var octx = document.getElementById("extendChart");
-    var reasonTypeChart = new Chart(octx, {
-        type: 'pie',
+    var ctxd2 = document.getElementById("DEV2Chart");
+    var DEV2Chart = new Chart(ctxd2, {
+        type: 'doughnut',
         data: {
-            labels: [
-                <?php while ($p = mysqli_fetch_array($select_ex)){
-                        echo "'".$p['last_position']."', ";
-                  }?>
-                  ],
+            labels: ["DEV2","Others"],
             datasets: [{
-                    label: 'pie chart',
-                    data: [
-                        <?php 
-                        $select_ex = mysqli_query($connect, "SELECT last_position , count(last_position)
-                                                              from leaves as l
-                                                              join employees as e
-                                                              on l.employee_number = e.employee_number
-                                                              where e.join_date is not null 
-                                                              and DATEDIFF(l.period, e.join_date) > 730
-                                                              group by (last_position);");
-                        while ($p = mysqli_fetch_array($select_ex)){
-                            echo "'".$p['count(last_position)']."', ";
-                        }?>
-                    ],
+                    label: 'doughnut chart',
+                    data: ["20","59"],
                     backgroundColor: coloR,
                     borderColor: coloR,
                     borderWidth: 1
@@ -249,11 +315,194 @@
         options: {
             title: {
                 display: true,
-                text: 'More than Two years',
-                fontSize : 35
+                text: "Resignation rate of DEV2",
+                fontSize : 65
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '33.89%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
             }
         }
-    } );
+    });
+
+    var ctxd4 = document.getElementById("DEV4Chart");
+    var DEV4Chart = new Chart(ctxd4, {
+        type: 'doughnut',
+        data: {
+            labels: ["DEV4","Others"],
+            datasets: [{
+                    label: 'doughnut chart',
+                    data: ["11","35"],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Resignation rate of DEV4",
+                fontSize : 65
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '31.42%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
+            }
+        }
+    });
+
+    var ctxd3 = document.getElementById("DEV3Chart");
+    var DEV3Chart = new Chart(ctxd3, {
+        type: 'doughnut',
+        data: {
+            labels: ["DEV3","Others"],
+            datasets: [{
+                    label: 'doughnut chart',
+                    data: ["14","45"],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Resignation rate of DEV3",
+                fontSize : 65
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '31.11%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
+            }
+        }
+    });
+
+    var ctxqa2 = document.getElementById("QA2Chart");
+    var QA2Chart = new Chart(ctxqa2, {
+        type: 'doughnut',
+        data: {
+            labels: ["DEV3","Others"],
+            datasets: [{
+                    label: 'doughnut chart',
+                    data: ["11","42"],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Resignation rate of QA2",
+                fontSize : 65
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '26.19%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
+            }
+        }
+    });
+
+    var ctxd1 = document.getElementById("DEV1Chart");
+    var DEV1Chart = new Chart(ctxd1, {
+        type: 'doughnut',
+        data: {
+            labels: ["DEV1","Others"],
+            datasets: [{
+                    label: 'doughnut chart',
+                    data: ["11","42"],
+                    backgroundColor: coloR,
+                    borderColor: coloR,
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Resignation rate of DEV1",
+                fontSize : 65
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '24.19%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
+            }
+        }
+    });
 </script>
       </div>
     </div>
