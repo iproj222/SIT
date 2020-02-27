@@ -152,6 +152,47 @@
 
 <script>
 
+    Chart.pluginService.register({
+        beforeDraw: function (chart) {
+            if (chart.config.options.elements.center) {
+            //Get ctx from string
+            var ctx = chart.chart.ctx;
+
+            //Get options from the center object in options
+            var centerConfig = chart.config.options.elements.center;
+            var fontStyle = centerConfig.fontStyle || 'Arial';
+            var txt = centerConfig.text;
+            var color = centerConfig.color || '#000';
+            var sidePadding = centerConfig.sidePadding || 20;
+            var sidePaddingCalculated = (sidePadding/100) * (chart.innerRadius * 2)
+            //Start with a base font of 30px
+            ctx.font = "30px " + fontStyle;
+
+            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+            var stringWidth = ctx.measureText(txt).width;
+            var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+            // Find out how much the font can grow in width.
+            var widthRatio = elementWidth / stringWidth;
+            var newFontSize = Math.floor(30 * widthRatio);
+            var elementHeight = (chart.innerRadius * 2);
+
+            // Pick a new font size so it will not be larger than the height of label.
+            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+            //Set font settings to draw it correctly.
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = fontSizeToUse+"px " + fontStyle;
+            ctx.fillStyle = color;
+
+            //Draw text in center
+            ctx.fillText(txt, centerX, centerY);
+            }
+        }
+    });
     var coloR = [];
     var points = new Array(100);
 
@@ -202,7 +243,24 @@
                 display: true,
                 text: "Left employees's WorkingTime",
                 fontSize : 35
-            }
+            },
+            tooltips: {
+                  bodyFontSize : 20,
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          var allData = data.datasets[tooltipItem.datasetIndex].data;
+                          var tooltipLabel = data.labels[tooltipItem.index];
+                          var tooltipData = allData[tooltipItem.index];
+                          var total = 0;
+                          for (var i in allData) {
+                              total += parseFloat(allData[i]);
+                          }
+                          var tooltipPercentage = Math.round((tooltipData / total)*10000)/100.0;
+                          return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                      }
+                  }
+              },
+              legend: { labels: { fontSize : 12 } }
         }
     } );
 
@@ -228,7 +286,24 @@
                 display: true,
                 text: "All employees's WorkingTime",
                 fontSize : 35
-            }
+            },
+            tooltips: {
+                  bodyFontSize : 20,
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          var allData = data.datasets[tooltipItem.datasetIndex].data;
+                          var tooltipLabel = data.labels[tooltipItem.index];
+                          var tooltipData = allData[tooltipItem.index];
+                          var total = 0;
+                          for (var i in allData) {
+                              total += parseFloat(allData[i]);
+                          }
+                          var tooltipPercentage = Math.round((tooltipData / total)*10000)/100.0;
+                          return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                      }
+                  }
+              },
+              legend: { labels: { fontSize : 12 } }
         }
     } );
 
@@ -236,9 +311,7 @@
     var Time8Chart = new Chart(ctx8, {
         type: 'doughnut',
         data: {
-            labels: [
-                "86.29%","13.71%"
-                  ],
+            labels: ["Over 8 hours for Left Employees","Others"],
             datasets: [{
                     label: 'doughnut chart',
                     data: [
@@ -252,24 +325,39 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 8Hours",
+                text: "Over 8 hours",
                 fontSize : 35
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '86.29%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
             }
         }
-    } );
+    });
 
     var ctx9 = document.getElementById("time9Chart");
     var Time9Chart = new Chart(ctx9, {
         type: 'doughnut',
         data: {
-            labels: [
-                "77.25%","22.75%"
-                  ],
+            labels: ["Over 9 hours for Left Employees","Others"],
             datasets: [{
                     label: 'doughnut chart',
-                    data: [
-                        "265","78"
-                    ],
+                    data: ["265","78"],
                     backgroundColor: coloR,
                     borderColor: coloR,
                     borderWidth: 1
@@ -278,24 +366,41 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 9Hours",
+                text: "Over 9 hours",
                 fontSize : 35
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '77.25%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
             }
         }
-    } );
+    });
+
+    
 
     var ctx10 = document.getElementById("time10Chart");
     var Time10Chart = new Chart(ctx10, {
         type: 'doughnut',
         data: {
-            labels: [
-                "24.48%","76.52%"
-                  ],
+            labels: ["Over10","Others"],
             datasets: [{
                     label: 'doughnut chart',
-                    data: [
-                        "84","259"
-                    ],
+                    data: ["84","259"],
                     backgroundColor: coloR,
                     borderColor: coloR,
                     borderWidth: 1
@@ -304,11 +409,30 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 10Hours",
+                text: "Over 10 hours",
                 fontSize : 35
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '24.48%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
             }
         }
-    } );
+    });
 
     var actx8 = document.getElementById("allTime8Chart");
     var aTime8Chart = new Chart(actx8, {
@@ -330,8 +454,27 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 8Hours",
+                text: "Over 8 hours",
                 fontSize : 35
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '70.02%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
             }
         }
     } );
@@ -340,9 +483,7 @@
     var aTime9Chart = new Chart(actx9, {
         type: 'doughnut',
         data: {
-            labels: [
-                "59.87%","40.13%"
-                  ],
+            labels: ["59.87%","40.13%"],
             datasets: [{
                     label: 'doughnut chart',
                     data: [
@@ -356,8 +497,27 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 9Hours",
+                text: "Over 9 hours",
                 fontSize : 35
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '59.87%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                        }
             }
         }
     } );
@@ -366,9 +526,7 @@
     var aTime10Chart = new Chart(actx10, {
         type: 'doughnut',
         data: {
-            labels: [
-                "18.09%","81.91%"
-                  ],
+            labels: ["18.09%","81.91%"],
             datasets: [{
                     label: 'doughnut chart',
                     data: [
@@ -382,12 +540,31 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 10Hours",
+                text: "Over 10 hours",
                 fontSize : 35
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '18.09%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                }
             }
         }
     } );
-
+    
     var bctx8 = document.getElementById("bTime8Chart");
     var bTime8Chart = new Chart(bctx8, {
         type: 'doughnut',
@@ -398,7 +575,7 @@
             datasets: [{
                     label: 'doughnut chart',
                     data: [
-                        "28.21","71.79" // 296 , 1049
+                        "296","1049" // 296 , 1049
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -408,8 +585,27 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 8Hours",
-                fontSize : 35
+                text: "Resignation rate of More Than 8 Hours ",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '28.21%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                }
             }
         }
     } );
@@ -424,7 +620,7 @@
             datasets: [{
                     label: 'doughnut chart',
                     data: [
-                        "29.54","70.46" // 265 , 897
+                        "265","897" // 265 , 897
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -434,8 +630,27 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 9Hours",
-                fontSize : 35
+                text: "Resignation rate of More Than 9 Hours",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '29.54%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                }
             }
         }
     } );
@@ -450,7 +665,7 @@
             datasets: [{
                     label: 'doughnut chart',
                     data: [
-                        "30.99","69.01" // 84 , 271
+                        "84","271" // 84 , 271
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -460,8 +675,27 @@
         options: {
             title: {
                 display: true,
-                text: "More Than 10Hours",
-                fontSize : 35
+                text: "Resignation rate of More Than 10 Hours",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '30.99%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                }
             }
         }
     } );

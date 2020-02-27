@@ -112,6 +112,47 @@
 
 <script>
 
+    Chart.pluginService.register({
+        beforeDraw: function (chart) {
+            if (chart.config.options.elements.center) {
+            //Get ctx from string
+            var ctx = chart.chart.ctx;
+
+            //Get options from the center object in options
+            var centerConfig = chart.config.options.elements.center;
+            var fontStyle = centerConfig.fontStyle || 'Arial';
+            var txt = centerConfig.text;
+            var color = centerConfig.color || '#000';
+            var sidePadding = centerConfig.sidePadding || 20;
+            var sidePaddingCalculated = (sidePadding/100) * (chart.innerRadius * 2)
+            //Start with a base font of 30px
+            ctx.font = "30px " + fontStyle;
+
+            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+            var stringWidth = ctx.measureText(txt).width;
+            var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+            // Find out how much the font can grow in width.
+            var widthRatio = elementWidth / stringWidth;
+            var newFontSize = Math.floor(30 * widthRatio);
+            var elementHeight = (chart.innerRadius * 2);
+
+            // Pick a new font size so it will not be larger than the height of label.
+            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+            //Set font settings to draw it correctly.
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = fontSizeToUse+"px " + fontStyle;
+            ctx.fillStyle = color;
+
+            //Draw text in center
+            ctx.fillText(txt, centerX, centerY);
+          }
+        }
+    });
     var coloR = [];
     var points = new Array(100);
 
@@ -147,7 +188,7 @@
         type: 'pie',
         data: {
             labels: [
-                      "<20" , "20-30" , "30-40" , "<40"
+                      "<20" , "20-30" , "30-40" , ">40"
                   ],
             datasets: [{
                     label: 'pie chart',
@@ -164,7 +205,24 @@
                 display: true,
                 text: 'All Age',
                 fontSize : 40
-            }
+            },
+            tooltips: {
+                  bodyFontSize : 35,
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          var allData = data.datasets[tooltipItem.datasetIndex].data;
+                          var tooltipLabel = data.labels[tooltipItem.index];
+                          var tooltipData = allData[tooltipItem.index];
+                          var total = 0;
+                          for (var i in allData) {
+                              total += parseFloat(allData[i]);
+                          }
+                          var tooltipPercentage = Math.round((tooltipData / total)*10000)/100.0;
+                          return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                      }
+                  }
+              },
+            legend: { labels: { fontSize : 30 } }
         }
     } );
 
@@ -172,14 +230,10 @@
     var leftAgeChart = new Chart(lctx, {
         type: 'pie',
         data: {
-            labels: [
-                      "<20" , "20-30" , "30-40" , "<40"
-                  ],
+            labels: ["<20" , "20-30" , "30-40" , ">40"],
             datasets: [{
                     label: 'pie chart',
-                    data: [
-                        "0" , "156" , "120" , "3"
-                    ],
+                    data: ["0" , "156" , "120" , "3"],
                     backgroundColor: coloR,
                     borderColor: coloR,
                     borderWidth: 1
@@ -190,7 +244,24 @@
                 display: true,
                 text: 'Left Age',
                 fontSize : 40
-            }
+            },
+            tooltips: {
+                  bodyFontSize : 35,
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          var allData = data.datasets[tooltipItem.datasetIndex].data;
+                          var tooltipLabel = data.labels[tooltipItem.index];
+                          var tooltipData = allData[tooltipItem.index];
+                          var total = 0;
+                          for (var i in allData) {
+                              total += parseFloat(allData[i]);
+                          }
+                          var tooltipPercentage = Math.round((tooltipData / total)*10000)/100.0;
+                          return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                      }
+                  }
+              },
+            legend: { labels: { fontSize : 30 } }
         }
     } );
 
@@ -204,7 +275,7 @@
             datasets: [{
                     label: 'doughnut',
                     data: [
-                        "0" , "100"
+                        "0" , "5"
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -214,8 +285,27 @@
         options: {
             title: {
                 display: true,
-                text: 'under 20',
-                fontSize : 40
+                text: "Resignation rate of Under 20",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+                center: {
+                      text: '0%',
+                      color: 'rgba(54, 162, 235, 1)',
+                      fontStyle: 'Arial', 
+                      sidePadding: 20 
+                }
             }
         }
     } );
@@ -225,14 +315,10 @@
     var tttChart = new Chart(tttctx, {
         type: 'doughnut',
         data: {
-            labels: [
-                    "left" , "others" 
-                  ],
+            labels: ["left" , "others"],
             datasets: [{
                     label: 'doughnut',
-                    data: [
-                        "30.95" ,"69.05"
-                    ],
+                    data: ["156" ,"348"],
                     backgroundColor: coloR,
                     borderColor: coloR,
                     borderWidth: 1
@@ -241,8 +327,27 @@
         options: {
             title: {
                 display: true,
-                text: '20-30',
-                fontSize : 40
+                text: "Resignation rate of 20 to 30",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+                center: {
+                      text: '30.95%',
+                      color: 'rgba(54, 162, 235, 1)',
+                      fontStyle: 'Arial', 
+                      sidePadding: 20 
+                }
             }
         }
     } );
@@ -257,7 +362,7 @@
             datasets: [{
                     label: 'doughnut',
                     data: [
-                        "39.73" ,"61.27"
+                        "120" ,"182"
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
@@ -267,36 +372,30 @@
         options: {
             title: {
                 display: true,
-                text: '30-40',
-                fontSize : 40
+                text: "Resignation rate of 30 to 40",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+                center: {
+                      text: '39.73%',
+                      color: 'rgba(54, 162, 235, 1)',
+                      fontStyle: 'Arial', 
+                      sidePadding: 20 
+                }
             }
         }
     } );
-
-    var options = {
-          tooltips: {
-              enabled: false
-          },
-          plugins: {
-              datalabels: {
-                  formatter: (value, o40ctx) => {
-                      let sum = 0;
-                      let dataArr = o40ctx.chart.data.datasets[0].data;
-                      dataArr.map(data => {
-                          sum += data;
-                      });
-                      let percentage = (value*100 / sum).toFixed(2)+"%";
-                      return percentage;
-                  },
-                  color: '#fff',
-              }
-          },
-          title: {
-                display: true,
-                text: 'Over 40',
-                fontSize : 40
-            }
-      };
 
     var o40ctx = document.getElementById("o40Chart");
     var o40Chart = new Chart(o40ctx, {
@@ -308,14 +407,39 @@
             datasets: [{
                     label: 'doughnut',
                     data: [
-                        "21.42" ,"79.58"
+                        "3" ,"11"
                     ],
                     backgroundColor: coloR,
                     borderColor: coloR,
                     borderWidth: 1
                 }]
         },
-        options: options
+        options: {
+            title: {
+                display: true,
+                text: "Resignation rate of Over 40",
+                fontSize : 45
+            },
+            cutoutPercentage: 64,
+            animation: {
+                animationRotate: true,
+                duration: 2000
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            elements: {
+				center: {
+                    text: '21.42%',
+                    color: 'rgba(54, 162, 235, 1)',
+                    fontStyle: 'Arial', 
+                    sidePadding: 20 
+                }
+            }
+        }
     } );
 </script>
       </div>
