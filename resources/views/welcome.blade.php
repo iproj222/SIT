@@ -47,7 +47,7 @@
 
       <div class="container-fluid">
         <h1 class="mt-4">SIT GPBL2020 Group3</h1>
-        <img src="/img/code.jpg" alt="" width="640" height="420">
+        <img src="/img/code.jpg" alt="" width="70%" height="70%">
       </div>
     </div>
     <!-- /#page-content-wrapper -->
