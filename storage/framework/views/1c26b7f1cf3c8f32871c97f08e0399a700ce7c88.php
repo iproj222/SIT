@@ -76,11 +76,11 @@
 
     $chart = array( "Personal Issues" => 0,
                     "Working Environment" => 0,
-                    "Continue Studying" => 0,
                     "CareerPath" => 0,
                     "Expired Contract" => 0,
-                    "Better Salary" => 0,
-                    "Fired"=> 0);
+                    "Continue Studying" => 0,
+                    "Fired"=> 0,
+                    "Better Salary" => 0);
 
     foreach($leaves as $key => $value){
         if($leaves[$key]->reason_type == "Personal Issues"){

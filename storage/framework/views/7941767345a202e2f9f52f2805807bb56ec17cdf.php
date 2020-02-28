@@ -84,7 +84,7 @@
 
     <canvas id="allChart" class="chart"></canvas>
 
-    <h2> Top 5 Last Position of Retirement Rate </h2>
+    <h2> Top 5 Last Position of Resignation Rate </h2>
 
     <canvas id="DEV2Chart" class="chart2"></canvas>
 
@@ -106,11 +106,13 @@
                                           join employees as e
                                           on l.employee_number = e.employee_number
                                           where e.join_date is not null 
-                                          group by (last_position);");
+                                          group by (last_position)
+                                          order by count(last_position) DESC;");
     
     $select_all = mysqli_query($connect,"SELECT lastPosition , count(lastPosition)
                                         from allLastPosition
-                                        group by lastPosition;");
+                                        group by lastPosition
+                                        order by count(lastPosition) DESC;");
 ?>
 
 <script>
@@ -202,7 +204,8 @@
                                                               join employees as e
                                                               on l.employee_number = e.employee_number
                                                               where e.join_date is not null 
-                                                              group by (last_position);");
+                                                              group by (last_position)
+                                                              order by count(last_position) DESC;");
                         while ($p = mysqli_fetch_array($select_one)){
                             echo "'".$p['count(last_position)']."', ";
                         }?>
@@ -259,7 +262,8 @@
                         <?php 
                         $select_all = mysqli_query($connect, "SELECT lastPosition , count(lastPosition)
                                                             from allLastPosition
-                                                            group by lastPosition;");
+                                                            group by lastPosition
+                                                            order by count(lastPosition) DESC;");
                         while ($p = mysqli_fetch_array($select_all)){
                             echo "'".$p['count(lastPosition)']."', ";
                         }?>
